@@ -1,23 +1,49 @@
 console.log("Howdy world");
-
+let playerCount=0,compCount=0;
 function playRound(playerSelection, computerSelection){
+  let result=document.querySelector('.result');
+  let count=document.querySelector('.count');
   if (playerSelection==computerSelection){
-    console.log("It's a tie");
+    result.textContent="It's a tie";
   }
   else if(playerSelection=="rock" && (computerSelection=="scissors")){
-    console.log("You win! Rock beat Scissors");
+    result.textContent="You win! Rock beat Scissors";
+    playerCount++;
   }
   else if(playerSelection=="scissors" && computerSelection=="paper"){
-    console.log("You win! Scissors beat Paper");
+    result.textContent="You win! Scissors beat Paper";
+    playerCount++;
   }
   else if(playerSelection=="paper" && computerSelection=="rock"){
-    console.log("You win! Paper beats Rock");
+    result.textContent="You win! Paper beats Rock";
+    playerCount++;
   }
   else{
-    console.log(`You lose! ${computerSelection} beats ${playerSelection}`);
+    result.textContent=`You lose! ${computerSelection} beats ${playerSelection}`;
+    compCount++;
+  }
+  count.textContent=`Player: ${playerCount} Computer: ${compCount}`;
+  if(playerCount==5){
+    let position=document.querySelector('.position');
+    position.textContent="You WIN the game!"
+    
+  }else if(compCount==5){
+    let position=document.querySelector('.position');
+    position.textContent="You LOSE the game!"
+    
   }
 }
 
+function removeState(){
+  let position=document.querySelector('.position');
+  let result=document.querySelector('.result');
+  let count=document.querySelector('.count');
+  position.textContent="";
+  result.textContent="";
+  count.textContent="";
+  playerCount=0;
+  compCount=0;
+}
 
 function computerPlay(){
   let temp=1;
@@ -32,16 +58,21 @@ function computerPlay(){
   }
 }
 
-function startGame(){
-  let playerSelection=prompt("Enter Rock, Paper or Scissors");
+function startGame(e){
+  if (playerCount==5|| compCount==5){
+    removeState();
+  }
+  let playerSelection=e.currentTarget.className.slice(0,-7);
 
-playerSelection=playerSelection.toLowerCase();
 
 const computerSelection=computerPlay();
 
 playRound(playerSelection,computerSelection);
 }
 
-const button=document.querySelector('input');
-button.addEventListener('click',startGame)
+const choiceArr=document.querySelectorAll(".card_container > div");
+choiceArr.forEach((e)=>e.addEventListener('click',startGame));
+
+
+
 
